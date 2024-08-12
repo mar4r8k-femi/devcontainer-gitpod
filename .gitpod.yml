@@ -1,0 +1,5 @@
+image: .gitpod.Dockerfile
+
+tasks:
+- name: Start Up
+  command: printf "hello world"
