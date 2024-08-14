@@ -2,14 +2,6 @@
 
 set -e
 
-# Ensure TOOL and VERSION are provided
-if [ -z "$TOOL" ] || [ -z "$VERSION" ]; then
-  echo "TOOL and VERSION environment variables must be set."
-  exit 1
-fi
-
-echo "Installing $TOOL version $VERSION from $REPO_TYPE..."
-
 # Determine the base URL based on the repo type
 if [ "$REPO_TYPE" == "devcontainers" ]; then
   BASE_URL="https://raw.githubusercontent.com/devcontainers/features/main/src/${TOOL}"
@@ -38,16 +30,8 @@ fi
 sudo chmod +x /usr/local/devcontainer-feature/${TOOL}/install.sh
 
 # Run the installation script
-if [ -f /usr/local/${TOOL}/library_scripts.sh ]; then
-  sudo /usr/local/devcontainer-feature/${TOOL}/install.sh || {
-    echo "Warning: library_scripts.sh not present, continuing..."
-    sudo /usr/local/devcontainer-feature/${TOOL}/install.sh 
-  }
-else
-  sudo /usr/local/devcontainer-feature/${TOOL}/install.sh
-fi
+sudo /usr/local/devcontainer-feature/${TOOL}/install.sh
 
-echo "$TOOL installation complete."
 
 # # Cleanup
 # sudo rm -rf /usr/local/devcontainer-feature/${TOOL}

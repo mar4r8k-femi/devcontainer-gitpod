@@ -1,31 +1,29 @@
-FROM gitpod/workspace-base
+FROM ubuntu:latest
 
-# Copy the install_tool.sh script into the image
-RUN sudo mkdir -p /usr/local/devcontainer-feature
-COPY install_tool.sh /usr/local/devcontainer-feature/install_tool.sh
-RUN sudo chmod +x /usr/local/devcontainer-feature/install_tool.sh
+USER root
+
+RUN apt-get update && apt-get install -y sudo curl git
+
+RUN mkdir -p /usr/local/devcontainer-feature
+COPY install_tool.sh /usr/local/devcontainer-feature/
+RUN chmod +x /usr/local/devcontainer-feature/install_tool.sh
+
 
 # =============================================
 # INSTALL AWS CLI
-ENV TOOL="aws-cli"
-ENV VERSION="1.0.7"
-ENV REPO_TYPE="devcontainers"
-RUN /usr/local/devcontainer-feature/install_tool.sh
+RUN TOOL="aws-cli" \
+    VERSION="1.0" \
+    REPO_TYPE="devcontainers" \
+    /usr/local/devcontainer-feature/install_tool.sh
 # =============================================
 
 # ===============================================
-# INSTALL HASKELL
-ENV TOOL="haskell"
-ENV VERSION="2.2.1"
-ENV INCLUDE_HLS=true
-ENV REPO_TYPE="devcontainers-contrib"
-RUN /usr/local/devcontainer-feature/install_tool.sh
+# INSTALL HTTP-SERVER
+RUN TOOL="http-server" \
+    VERSION="1.0.3" \
+    REPO_TYPE="devcontainers-contrib" \
+    /usr/local/devcontainer-feature/install_tool.sh
 # ===============================================
 
-# ===============================================
-# INSTALL MYSQL
-ENV TOOL="mysql-homebrew"
-ENV VERSION="1.0.18"
-ENV REPO_TYPE="devcontainers-contrib"
-RUN /usr/local/devcontainer-feature/install_tool.sh
-# ===============================================
+
+USER gitpod
